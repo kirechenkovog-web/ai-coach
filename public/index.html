@@ -24,17 +24,110 @@
       align-items: center;
       justify-content: center;
       z-index: 100;
+      overflow-y: auto;
+      padding: 24px;
     }
 
     #login-screen.hidden { display: none; }
+
+    .login-wrap {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    /* Лендинг слева */
+    .landing {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      min-width: 0;
+    }
+
+    .landing-hero {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .landing-avatar {
+      font-size: 3.5rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .landing-hero h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .landing-hero h1 span {
+      color: #7c6aff;
+    }
+
+    .landing-tagline {
+      font-size: 1rem;
+      color: #8080b0;
+      line-height: 1.6;
+      border-left: 3px solid #7c6aff;
+      padding-left: 14px;
+    }
+
+    .features {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: #1a1a2e;
+      border: 1px solid #2a2a45;
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+
+    .feature-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .feature-text strong {
+      display: block;
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .feature-text span {
+      font-size: 0.8rem;
+      color: #6060a0;
+      line-height: 1.4;
+    }
+
+    .divider {
+      width: 1px;
+      background: #1e1e35;
+      align-self: stretch;
+      flex-shrink: 0;
+    }
 
     .login-card {
       background: #1a1a2e;
       border: 1px solid #2a2a45;
       border-radius: 24px;
-      padding: 40px;
+      padding: 36px;
       width: 100%;
-      max-width: 400px;
+      max-width: 340px;
+      flex-shrink: 0;
       display: flex;
       flex-direction: column;
       gap: 20px;
@@ -56,6 +149,12 @@
       color: #6060a0;
       font-size: 0.88rem;
       line-height: 1.5;
+    }
+
+    @media (max-width: 680px) {
+      .login-wrap { flex-direction: column; }
+      .divider { display: none; }
+      .login-card { max-width: 100%; }
     }
 
     .field { display: flex; flex-direction: column; gap: 6px; }
@@ -324,7 +423,56 @@
 
 <!-- ЭКРАН ВХОДА -->
 <div id="login-screen">
-  <div class="login-card">
+  <div class="login-wrap">
+
+    <!-- Лендинг -->
+    <div class="landing">
+      <div class="landing-hero">
+        <div class="landing-avatar">🧔</div>
+        <h1>Коучер<br><span>Игорь</span></h1>
+      </div>
+
+      <div class="landing-tagline">
+        Не психолог. Не мотивационный спикер.<br>
+        Тот, кто скажет тебе правду в глаза — и поможет сдвинуться с мёртвой точки.
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">🎯</div>
+          <div class="feature-text">
+            <strong>Цели без булшита</strong>
+            <span>Разберёмся чего ты на самом деле хочешь, а не что надо хотеть</span>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🔥</div>
+          <div class="feature-text">
+            <strong>Прокрастинация и залёты</strong>
+            <span>Найдём что тормозит и сделаем с этим что-нибудь конкретное</span>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">💼</div>
+          <div class="feature-text">
+            <strong>Работа и карьера</strong>
+            <span>Куда расти, как разговаривать с боссом, стоит ли вообще менять всё</span>
+          </div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🧠</div>
+          <div class="feature-text">
+            <strong>Голова в порядок</strong>
+            <span>Когда всё навалилось и непонятно с чего начать — начнём отсюда</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Форма входа -->
+    <div class="login-card">
     <div class="logo">🧔</div>
     <h1>Коучер Игорь</h1>
     <p>Введите имя и почту, чтобы начать.<br>Если уже были — загрузим историю.</p>
@@ -337,8 +485,10 @@
       <input id="login-email" type="email" placeholder="ivan@example.com" autocomplete="email">
     </div>
     <div class="error-msg" id="login-error"></div>
-    <button class="btn-primary" id="login-btn">Войти</button>
+    <button class="btn-primary" id="login-btn">Погнали →</button>
   </div>
+
+  </div><!-- /login-wrap -->
 </div>
 
 <!-- ОСНОВНОЙ ИНТЕРФЕЙС -->
