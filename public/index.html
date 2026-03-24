@@ -152,9 +152,11 @@
     }
 
     @media (max-width: 680px) {
-      .login-wrap { flex-direction: column; }
+      #login-screen { align-items: flex-start; padding: 20px 16px; }
+      .login-wrap { flex-direction: column; gap: 28px; }
       .divider { display: none; }
-      .login-card { max-width: 100%; }
+      .login-card { max-width: 100%; padding: 24px; }
+      .landing-hero h1 { font-size: 1.6rem; }
     }
 
     .field { display: flex; flex-direction: column; gap: 6px; }
@@ -166,7 +168,7 @@
       border-radius: 10px;
       padding: 12px 14px;
       color: #e0e0f0;
-      font-size: 0.95rem;
+      font-size: 16px; /* предотвращает авто-зум на iOS */
       outline: none;
       transition: border-color 0.2s;
     }
@@ -204,6 +206,46 @@
       display: flex;
       flex-direction: column;
       height: 100dvh;
+      transition: transform 0.25s ease;
+    }
+
+    #sidebar-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 50;
+    }
+
+    #sidebar-overlay.visible { display: block; }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: #e0e0f0;
+      cursor: pointer;
+      padding: 4px;
+      margin-right: 4px;
+    }
+
+    @media (max-width: 640px) {
+      #sidebar {
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        z-index: 60;
+        transform: translateX(-100%);
+      }
+      #sidebar.open { transform: translateX(0); }
+      .hamburger { display: flex; align-items: center; justify-content: center; }
+
+      #chat { padding: 14px; gap: 12px; }
+      #input-area { padding: 10px 12px 16px; }
+
+      .msg { max-width: 92%; }
+
+      header { padding: 12px 16px; }
+
+      textarea { font-size: 16px; } /* предотвращает авто-зум на iOS */
     }
 
     .sidebar-header {
@@ -492,6 +534,7 @@
 </div>
 
 <!-- ОСНОВНОЙ ИНТЕРФЕЙС -->
+<div id="sidebar-overlay"></div>
 <div id="sidebar">
   <div class="sidebar-header">
     <div class="user-info">
@@ -511,6 +554,13 @@
 
 <div id="chat-area">
   <header>
+    <button class="hamburger" id="hamburger-btn" aria-label="Меню">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+        <rect y="3" width="20" height="2" rx="1"/>
+        <rect y="9" width="20" height="2" rx="1"/>
+        <rect y="15" width="20" height="2" rx="1"/>
+      </svg>
+    </button>
     <div class="coach-avatar">🧔</div>
     <div>
       <h1>Коучер Игорь</h1>
@@ -713,7 +763,7 @@
 
     const av  = document.createElement("div");
     av.className = "msg-avatar";
-    av.textContent = "🧭";
+    av.textContent = "🧔";
 
     const bub = document.createElement("div");
     bub.className = "bubble";
@@ -815,6 +865,25 @@
   function escHtml(str) {
     return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   }
+
+  // --- Мобильный сайдбар ---
+  const sidebar        = document.getElementById("sidebar");
+  const sidebarOverlay = document.getElementById("sidebar-overlay");
+  const hamburgerBtn   = document.getElementById("hamburger-btn");
+
+  function openSidebar()  { sidebar.classList.add("open"); sidebarOverlay.classList.add("visible"); }
+  function closeSidebar() { sidebar.classList.remove("open"); sidebarOverlay.classList.remove("visible"); }
+
+  hamburgerBtn.addEventListener("click", openSidebar);
+  sidebarOverlay.addEventListener("click", closeSidebar);
+
+  // Закрывать сайдбар при выборе сессии на мобильном
+  sessionsList.addEventListener("click", () => {
+    if (window.innerWidth <= 640) closeSidebar();
+  });
+  newSessionBtn.addEventListener("click", () => {
+    if (window.innerWidth <= 640) closeSidebar();
+  });
 </script>
 </body>
 </html>
