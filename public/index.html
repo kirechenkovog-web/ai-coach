@@ -152,14 +152,20 @@
     }
 
     @media (max-width: 680px) {
-      #login-screen { align-items: center; padding: 24px 16px; }
-      .login-wrap { flex-direction: column; gap: 0; }
+      #login-screen {
+        align-items: flex-start;
+        padding: 24px 16px 40px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .login-wrap { flex-direction: column; gap: 20px; }
       .divider { display: none; }
-      .landing { gap: 12px; margin-bottom: 24px; }
+      .landing { gap: 10px; }
       .features { display: none; }
-      .landing-tagline { font-size: 0.9rem; }
-      .login-card { max-width: 100%; padding: 24px; }
-      .landing-hero h1 { font-size: 1.6rem; }
+      .landing-tagline { font-size: 0.88rem; }
+      .login-card { max-width: 100%; padding: 20px; }
+      .login-card .logo { display: none; }
+      .login-card > h1 { display: none; }
+      .landing-hero h1 { font-size: 1.5rem; }
     }
 
     .field { display: flex; flex-direction: column; gap: 6px; }
