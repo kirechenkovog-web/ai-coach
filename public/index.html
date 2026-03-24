@@ -597,6 +597,7 @@
   let currentSessionId = null;
   let history = [];
   let isBusy = false;
+  let hasUserMessages = false;
 
   // --- Элементы ---
   const loginScreen  = document.getElementById("login-screen");
@@ -643,6 +644,7 @@
       user = data.user;
       loginScreen.classList.add("hidden");
       setupSidebar(data.sessions);
+      startNewSession();
     } catch (e) {
       loginErrorEl.textContent = "Ошибка соединения";
     } finally {
@@ -679,9 +681,16 @@
     });
   }
 
-  newSessionBtn.addEventListener("click", startNewSession);
+  newSessionBtn.addEventListener("click", () => startNewSession());
+
+  async function deleteCurrentSessionIfEmpty() {
+    if (currentSessionId && !hasUserMessages) {
+      await fetch(`/api/sessions/${currentSessionId}`, { method: "DELETE" });
+    }
+  }
 
   async function startNewSession() {
+    await deleteCurrentSessionIfEmpty();
     const res = await fetch("/api/sessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -689,6 +698,7 @@
     });
     const data = await res.json();
     currentSessionId = data.session_id;
+    hasUserMessages = false;
     history = [];
     chatEl.innerHTML = "";
     updateActiveSession();
@@ -733,9 +743,11 @@
     });
   }
 
-  logoutBtn.addEventListener("click", () => {
+  logoutBtn.addEventListener("click", async () => {
+    await deleteCurrentSessionIfEmpty();
     user = null;
     currentSessionId = null;
+    hasUserMessages = false;
     history = [];
     chatEl.innerHTML = "";
     loginNameEl.value = "";
@@ -857,6 +869,7 @@
   function handleSend() {
     const text = inputEl.value.trim();
     if (!text || !currentSessionId) return;
+    hasUserMessages = true;
     inputEl.value = "";
     inputEl.style.height = "auto";
     sendToCoach(text);

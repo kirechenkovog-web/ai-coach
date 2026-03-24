@@ -129,6 +129,14 @@ def create_session():
     return {"session_id": session_id}
 
 
+@app.route("/api/sessions/<int:session_id>", methods=["DELETE"])
+def delete_session(session_id):
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.execute("DELETE FROM messages WHERE session_id = ?", (session_id,))
+        conn.execute("DELETE FROM sessions WHERE id = ?", (session_id,))
+    return {"ok": True}
+
+
 @app.route("/api/sessions/<int:session_id>/messages")
 def get_messages(session_id):
     db = get_db()
